@@ -9,6 +9,9 @@ public class EnnemyBehaviour : MonoBehaviour
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private float _sightRange = 5f;
     [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float _attackCooldown = 5f;
+    private bool _canAttack = true;
+    private bool _playerInRange = false;
     Vector3 movement;
     [SerializeField] Animator _enemyAnim;
 
@@ -19,6 +22,7 @@ public class EnnemyBehaviour : MonoBehaviour
     {
         _enemyAnim = GetComponent<Animator>();
         _enemyAnim.SetBool("AIRunning",false);
+        _enemyAnim.SetBool("IsAttacking",false);
     }
 
     // Update is called once per frame
@@ -60,5 +64,36 @@ public class EnnemyBehaviour : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(directionToPlayer, Vector3.up);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            _playerInRange = true;
+            Debug.Log("Player entered trigger");
+            if (_canAttack)
+            {
+                _enemyAnim.SetBool("IsAttacking", true);
+                LifeManager.instance.ReduceLife(1);
+                StartCoroutine(AttackCooldownCoroutine());
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            _playerInRange = false;
+            _enemyAnim.SetBool("IsAttacking", false);
+            Debug.Log("Player exited trigger");
+        }
+    }
+
+    private IEnumerator AttackCooldownCoroutine()
+    {
+        _canAttack = false;
+        yield return new WaitForSeconds(_attackCooldown);
+        _canAttack = true;
+    }
     
 }
