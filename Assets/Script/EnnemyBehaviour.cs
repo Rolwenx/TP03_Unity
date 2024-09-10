@@ -10,24 +10,27 @@ public class EnnemyBehaviour : MonoBehaviour
     [SerializeField] private float _sightRange = 5f;
     [SerializeField] private float walkSpeed = 5f;
     Vector3 movement;
+    [SerializeField] Animator _enemyAnim;
 
-    public NavMeshAgent agent;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _enemyAnim = GetComponent<Animator>();
+        _enemyAnim.SetBool("AIRunning",false);
     }
 
     // Update is called once per frame
     void Update()
     {
         if(CanSeePlayer()){
+            _enemyAnim.SetBool("AIRunning",true);
             ChasePlayer();
-        }/*
+        }
         else{
-            Patrol();
-        }*/
+            _enemyAnim.SetBool("AIRunning",false);
+        }
     }
 
     public bool CanSeePlayer(){
@@ -56,9 +59,6 @@ public class EnnemyBehaviour : MonoBehaviour
         transform.position += directionToPlayer * walkSpeed * Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(directionToPlayer, Vector3.up);
     }
-/*    public void Patrol(){
 
-     
-    }*/
-
+    
 }
