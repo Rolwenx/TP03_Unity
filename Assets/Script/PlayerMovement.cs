@@ -100,16 +100,17 @@ public class PlayerMovement : MonoBehaviour
 
     bool IsGrounded()
     {
-        _playerAnim.SetBool("IsGrounded", true);
-        return _rigidbody.velocity.y == 0;
-    }
+        return Physics.Raycast(transform.position, Vector3.down, 1.1f);
+}
 
     bool IsRunning()
     {
-        if(Input.GetKey(KeyCode.LeftShift)){
+        if(Input.GetKey(KeyCode.LeftShift) && _playerAnim.GetBool("IsWalking")){
+            _playerAnim.SetBool("IsRunning", true);
             return true;
         }
         else{
+            _playerAnim.SetBool("IsRunning", false);
             return false;
         }
     }
