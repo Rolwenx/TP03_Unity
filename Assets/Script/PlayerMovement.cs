@@ -69,6 +69,8 @@ public class PlayerMovement : MonoBehaviour
             _playerAnim.SetBool("IsWalking", false);
 
         }
+
+        
         if (IsRunning() && IsGrounded())
         {
             movement = new Vector3(moveX, 0f, moveY) * runSpeed * Time.deltaTime;
