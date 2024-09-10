@@ -12,33 +12,64 @@ public class PlayerMovement : MonoBehaviour
     Vector3 movement;
     Vector3 jump;
     [SerializeField] private Rigidbody _rigidbody;
-    //[SerializeField] Animator _playerAnim;
+    [SerializeField] Animator _playerAnim;
+    
+    private bool isGrounded;
+    private bool wasGrounded;
+    private bool isJumping;
 
     
     // Start is called before the first frame update
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _playerAnim = GetComponentInChildren<Animator>();
         jump = new Vector3(0, 1f, 0);
+        isGrounded = true;
+        wasGrounded = true;
+        isJumping = false;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
 
-        // if this, it means the user is pressing the moving button
-        if (moveX != 0 || moveY != 0)
+    
+        if(isJumping){
+            wasGrounded = true;
+        }
+        else{
+            wasGrounded = false;
+        }
+        isGrounded = IsGrounded();
+
+        _playerAnim.SetBool("IsGrounded", isGrounded);
+
+    
+        if (wasGrounded && !isGrounded)
         {
-            //_playerAnim.SetBool("Walk", true); 
-            RotateCharacter(moveX, moveY);
+            Debug.Log("hi");
+            _playerAnim.SetBool("IsFalling", true);
         }
         else
         {
-            //_playerAnim.SetBool("Walk", false);
+            _playerAnim.SetBool("IsFalling", false);
         }
 
+    
+        // if this, it means the user is pressing the moving button
+        if (moveX != 0 || moveY != 0)
+        {
+            _playerAnim.SetBool("IsWalking", true);
+
+        }
+        else
+        {
+            _playerAnim.SetBool("IsWalking", false);
+
+        }
         if (IsRunning() && IsGrounded())
         {
             movement = new Vector3(moveX, 0f, moveY) * runSpeed * Time.deltaTime;
@@ -50,13 +81,15 @@ public class PlayerMovement : MonoBehaviour
         // we take current position of the player + add the movement
         transform.position += movement;
 
-        if (Input.GetKeyDown(KeyCode.Space) & IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             Jump();
+            _playerAnim.SetBool("IsJumping", true);
+            isJumping = true;
         }
-
-        
-
+        else{
+            _playerAnim.SetBool("IsJumping", false);
+        }
 
     }
 
@@ -67,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool IsGrounded()
     {
+        _playerAnim.SetBool("IsGrounded", true);
         return _rigidbody.velocity.y == 0;
     }
 
@@ -80,14 +114,4 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void RotateCharacter(float moveX, float moveY)
-{
-    Vector3 direction = new Vector3(moveX, 0f, moveY);
-
-    if (direction.magnitude > 0.1f)
-    {
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f); // Smooth rotation
-    }
-}
 }
