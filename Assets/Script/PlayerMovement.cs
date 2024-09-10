@@ -50,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
     
         if (wasGrounded && !isGrounded)
         {
-            Debug.Log("hi");
             _playerAnim.SetBool("IsFalling", true);
         }
         else
@@ -63,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         if (moveX != 0 || moveY != 0)
         {
             _playerAnim.SetBool("IsWalking", true);
+            RotateTowardsMovement(moveX, moveY);
 
         }
         else
@@ -73,10 +73,17 @@ public class PlayerMovement : MonoBehaviour
         if (IsRunning() && IsGrounded())
         {
             movement = new Vector3(moveX, 0f, moveY) * runSpeed * Time.deltaTime;
+            
         }
         else{
             movement = new Vector3(moveX, 0f, moveY) * walkSpeed * Time.deltaTime;
+
         }
+        if (movement.magnitude > 0f)
+            {
+                transform.Translate(movement * 0.1f, Space.World);
+                transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
+            }
 
         // we take current position of the player + add the movement
         transform.position += movement;
@@ -113,6 +120,10 @@ public class PlayerMovement : MonoBehaviour
             _playerAnim.SetBool("IsRunning", false);
             return false;
         }
+    }
+
+    void RotateTowardsMovement(float moveX, float moveY){
+
     }
 
 }
