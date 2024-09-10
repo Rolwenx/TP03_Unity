@@ -9,9 +9,9 @@ public class EnnemyBehaviour : MonoBehaviour
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private float _sightRange = 5f;
     [SerializeField] private float walkSpeed = 5f;
-    [SerializeField] private float _attackCooldown = 5f;
+    //[SerializeField] private float _attackCooldown = 5f;
+    [SerializeField] private int _attackForce = 20;
     private bool _canAttack = true;
-    private bool _playerInRange = false;
     Vector3 movement;
     [SerializeField] Animator _enemyAnim;
 
@@ -68,13 +68,12 @@ public class EnnemyBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _playerInRange = true;
             Debug.Log("Player entered trigger");
             if (_canAttack)
             {
                 _enemyAnim.SetBool("IsAttacking", true);
-                LifeManager.instance.ReduceLife(1);
-                StartCoroutine(AttackCooldownCoroutine());
+                GameManager.instance.ReduceLife(_attackForce);
+                //StartCoroutine(AttackCooldownCoroutine());
             }
         }
     }
@@ -83,17 +82,16 @@ public class EnnemyBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _playerInRange = false;
             _enemyAnim.SetBool("IsAttacking", false);
             Debug.Log("Player exited trigger");
         }
     }
-
+/*
     private IEnumerator AttackCooldownCoroutine()
     {
         _canAttack = false;
         yield return new WaitForSeconds(_attackCooldown);
         _canAttack = true;
     }
-    
+    */
 }
