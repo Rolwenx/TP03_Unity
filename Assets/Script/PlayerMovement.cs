@@ -62,7 +62,6 @@ public class PlayerMovement : MonoBehaviour
         if (moveX != 0 || moveY != 0)
         {
             _playerAnim.SetBool("IsWalking", true);
-            RotateTowardsMovement(moveX, moveY);
 
         }
         else
@@ -98,6 +97,16 @@ public class PlayerMovement : MonoBehaviour
             _playerAnim.SetBool("IsJumping", false);
         }
 
+        if (Input.GetKeyDown(KeyCode.Space) && IsRunning())
+        {
+            _playerAnim.SetBool("IsRunJumping", true);
+        }
+        else{
+            _playerAnim.SetBool("IsRunJumping", false);
+        }
+
+
+
     }
 
     void Jump(){
@@ -122,8 +131,5 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void RotateTowardsMovement(float moveX, float moveY){
-
-    }
 
 }
