@@ -5,13 +5,10 @@ using UnityEngine;
 public class DayNightCycle : MonoBehaviour
 {
     [SerializeField] private float dayLength = 120f;
-    // for day
     [SerializeField] private float maxIntensity = 1f; 
-    // for night
-    [SerializeField] private float minIntensity = 0.2f; 
+    [SerializeField] private float minIntensity = 0f; 
     public static DayNightCycle instance;
 
-    // O is morning - 1 is night
     private float timeOfDay = 0f; 
     [SerializeField] private Light sun;
     [SerializeField] public float timeSpeed = 0.1f;
@@ -26,20 +23,21 @@ public class DayNightCycle : MonoBehaviour
 
     void Update()
     {
-        // as time progress, time increase
+        // Update time of day
         timeOfDay += (Time.deltaTime / dayLength * timeSpeed);
 
-        // if (timeOfDay >= 1f) => if we are past night so cycle starts back
+        // Loop time of day value
         if (timeOfDay >= 1f) 
         {
             timeOfDay = 0f;
         }
 
+        // Update sun rotation
         float sunAngle = timeOfDay * 360f - 90f;
         sun.transform.rotation = Quaternion.Euler(sunAngle, 170f, 0f);
 
-        float sunIntensity = Mathf.Lerp(minIntensity, maxIntensity, Mathf.Cos(timeOfDay * 2 * Mathf.PI));
+        // Use a sharper transition between day and night
+        float sunIntensity = Mathf.Lerp(minIntensity, maxIntensity, Mathf.Clamp01(Mathf.Sin(timeOfDay * 2 * Mathf.PI)));
         sun.intensity = sunIntensity;
     }
-
 }
