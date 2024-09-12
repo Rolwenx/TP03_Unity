@@ -12,12 +12,13 @@ public class PlayerMovement : MonoBehaviour
     Vector3 movement;
     Vector3 jump;
     [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] Animator _playerAnim;
+    [SerializeField] public Animator _playerAnim;
     
     private bool isGrounded;
     private bool wasGrounded;
     private bool isJumping;
 
+ 
     
     // Start is called before the first frame update
     void Start()
@@ -28,11 +29,20 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = true;
         wasGrounded = true;
         isJumping = false;
+        _playerAnim.SetBool("IsDying",false);
     }
+
+
 
     // Update is called once per frame
     void Update()
     {
+
+        if(GameManager.instance.GetLife() == 0){
+            _playerAnim.SetBool("IsDying",true);
+
+        }
+
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
 

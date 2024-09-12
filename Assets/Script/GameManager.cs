@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
 
 
     public static GameManager instance;
+
+    public int GetLife(){
+        return _playerLife_OutOfFive;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -35,9 +39,9 @@ public class GameManager : MonoBehaviour
         _lifeText.text = _playerLife_OutOfFive.ToString();
         if (_playerLife_OutOfFive <= 0)
         {
-            Time.timeScale = 0;
+        
             _gameOverPanel.SetActive(true);
-            Debug.Log("Player is dead");
+            Time.timeScale = 0;
         }
     }
 }
