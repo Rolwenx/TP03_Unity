@@ -29,7 +29,6 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = true;
         wasGrounded = true;
         isJumping = false;
-        _playerAnim.SetBool("IsDying",false);
     }
 
 
@@ -37,11 +36,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if(GameManager.instance.GetLife() == 0){
-            _playerAnim.SetBool("IsDying",true);
-
-        }
 
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
