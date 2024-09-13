@@ -959,6 +959,7 @@ MonoBehaviour:
   jumpForce: 5
   _rigidbody: {fileID: 717333076}
   _playerAnim: {fileID: 1761212716}
+  cameraTransform: {fileID: 963194228}
 --- !u!4 &717333075
 Transform:
   m_ObjectHideFlags: 0
@@ -1417,14 +1418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce0e1b6e3b29d454da95d3ca0d3fb13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cible: {fileID: 717333075}
-  distance: 5
-  distanceMin: 3
-  distanceMax: 15
-  vitesseZoom: 1
-  "sensibilit\xE9Rotation": 4
-  limiteRotationVerticaleMin: -20
-  limiteRotationVerticaleMax: 60
 --- !u!1 &1011463489
 GameObject:
   m_ObjectHideFlags: 0
