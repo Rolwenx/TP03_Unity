@@ -1,5 +1,6 @@
 # TP03_Unity
 Introduction to Unity 3D for the course of Virtual Reality. 
+Creator: Yoke NGASSA (I2 Majeure Technologies Immersives & AI (anciennement Imagerie & Réalité virtuelle)
 
 ## Exercises Done
 All mandatory exercises + Bonus 1 (exercise 8)
