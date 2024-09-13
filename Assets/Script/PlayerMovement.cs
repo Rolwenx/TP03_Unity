@@ -18,7 +18,8 @@ public class PlayerMovement : MonoBehaviour
     private bool wasGrounded;
     private bool isJumping;
 
- 
+    public Transform cameraTransform;
+
     
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
 
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
+
+        Vector3 moveDirection = cameraTransform.forward * moveY + cameraTransform.right * moveX;
+        moveDirection.y = 0;
 
     
         if(isJumping){
@@ -77,17 +81,17 @@ public class PlayerMovement : MonoBehaviour
         
         if (IsRunning() && IsGrounded())
         {
-            movement = new Vector3(moveX, 0f, moveY) * runSpeed * Time.deltaTime;
+            movement = moveDirection * runSpeed * Time.deltaTime;
             
         }
         else{
-            movement = new Vector3(moveX, 0f, moveY) * walkSpeed * Time.deltaTime;
+            movement = moveDirection * walkSpeed * Time.deltaTime;
 
         }
         if (movement.magnitude > 0f)
             {
-                transform.Translate(movement * 0.1f, Space.World);
-                transform.rotation = Quaternion.LookRotation(movement, Vector3.up);
+                transform.Translate(movement, Space.World);
+                transform.rotation = Quaternion.LookRotation(moveDirection, Vector3.up);
             }
 
         // we take current position of the player + add the movement

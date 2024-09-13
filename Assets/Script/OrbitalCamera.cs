@@ -20,6 +20,8 @@ public class OrbitalCamera : MonoBehaviour
     public float maxVerticalAngle = 80f; 
     private float _currentVerticalAngle = 0f;
     private float _currentHorizontalAngle = 0f;
+
+    public LayerMask obstructionLayer;
     
     void Start()
     {
@@ -53,9 +55,33 @@ public class OrbitalCamera : MonoBehaviour
             _currentVerticalAngle = Mathf.Clamp(_currentVerticalAngle, minVerticalAngle, maxVerticalAngle);
         }
 
+        Vector3 desiredPosition = CalculateDesiredCameraPosition();
+        Vector3 finalPosition = CheckForObstructions(desiredPosition);
+
+        transform.position = finalPosition;
+        transform.LookAt(_player.position);
+    }
+
+    Vector3 CheckForObstructions(Vector3 desiredPosition)
+    {
+        // I check we rayCast if there are obstacles
+        RaycastHit hit;
+        Vector3 directionToCamera = desiredPosition - _player.position;
+        if (Physics.Raycast(_player.position, directionToCamera, out hit, directionToCamera.magnitude, obstructionLayer))
+        {
+            // If obstacle detected, close up camera to player
+            float distanceToObstacle = hit.distance;
+            return _player.position + directionToCamera.normalized * Mathf.Clamp(distanceToObstacle - 0.1f, minDistance, maxDistance);
+        }
+
+        // if no obstacle, we return to initial pos
+        return desiredPosition;
+    }
+
+    Vector3 CalculateDesiredCameraPosition()
+    {
         Quaternion rotation = Quaternion.Euler(_currentVerticalAngle, _currentHorizontalAngle, 0f);
         Vector3 direction = rotation * Vector3.back * _currentDistance;
-        transform.position = _player.position + direction;
-        transform.LookAt(_player.position);
+        return _player.position + direction;
     }
 }
