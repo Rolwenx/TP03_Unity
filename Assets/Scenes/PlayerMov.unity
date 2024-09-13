@@ -1003,7 +1003,7 @@ MonoBehaviour:
   maxIntensity: 1
   minIntensity: 0.2
   sun: {fileID: 705507994}
-  timeSpeed: 10
+  timeSpeed: 5
 --- !u!1 &716598724
 GameObject:
   m_ObjectHideFlags: 0
