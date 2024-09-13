@@ -14,7 +14,7 @@ public class EnnemyBehaviour : MonoBehaviour
     private bool _canAttack = true;
     Vector3 movement;
     [SerializeField] Animator _enemyAnim;
-    [SerializeField] FloatingHealthBar _healthbar;
+    
 
 
 
