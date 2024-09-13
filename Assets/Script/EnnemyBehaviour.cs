@@ -14,6 +14,7 @@ public class EnnemyBehaviour : MonoBehaviour
     private bool _canAttack = true;
     Vector3 movement;
     [SerializeField] Animator _enemyAnim;
+    [SerializeField] FloatingHealthBar _healthbar;
 
 
 
@@ -73,7 +74,6 @@ public class EnnemyBehaviour : MonoBehaviour
             {
                 _enemyAnim.SetBool("IsAttacking", true);
                 GameManager.instance.ReduceLife(_attackForce);
-                //StartCoroutine(AttackCooldownCoroutine());
             }
         }
     }
@@ -86,12 +86,4 @@ public class EnnemyBehaviour : MonoBehaviour
             Debug.Log("Player exited trigger");
         }
     }
-/*
-    private IEnumerator AttackCooldownCoroutine()
-    {
-        _canAttack = false;
-        yield return new WaitForSeconds(_attackCooldown);
-        _canAttack = true;
-    }
-    */
 }
