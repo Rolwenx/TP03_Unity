@@ -94,8 +94,7 @@ public class PlayerMovement : MonoBehaviour
                 transform.rotation = Quaternion.LookRotation(moveDirection, Vector3.up);
             }
 
-        // we take current position of the player + add the movement
-        transform.position += movement;
+    
 
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
