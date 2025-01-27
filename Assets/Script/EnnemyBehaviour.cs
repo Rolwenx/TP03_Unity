@@ -8,7 +8,7 @@ public class EnnemyBehaviour : MonoBehaviour
 
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private float _sightRange = 5f;
-    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float walkSpeed = 7f;
     //[SerializeField] private float _attackCooldown = 5f;
     [SerializeField] private int _attackForce = 20;
     private bool _canAttack = true;
